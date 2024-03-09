@@ -2,7 +2,8 @@
 #include<limits.h>
 #include<math.h>
 #include<vector>
-#include <string>
+#include<string>
+#include<stdint.h>
 
 using namespace std;
 
@@ -89,28 +90,25 @@ int main()
     do {
         display();
         cin >> selection;
-        while(selection != 1 && selection != 2 && selection != 3 && selection != 4 && selection != 5){
-            cout << "Please re-enter your selection from 1 to 3:";
-            cin >> selection;
-        }
         vector<uint8_t> seed;
-            int seedLength;
-            cout << "Enter your seed length: ";
-            cin >> seedLength;
-            for(int i = 0 ; i < seedLength ; i++){
-                cout << i << " ";
-            }
-            for(int i = 0 ; i < seedLength ; i++){
-                int temp;
-                cout << "Enter your seed letter number " << i << ": ";
-                cin >> temp;
-                seed.push_back(uint8_t(temp));
-            }
+        int seedLength;
+        cout << "Enter your seed length: ";
+        cin >> seedLength;
+        for(int i = 0 ; i < seedLength ; i++){
+            cout << i << " ";
+        }
+        for(int i = 0 ; i < seedLength ; i++){
+            int temp;
+            cout << "Enter your seed letter number " << i << ": ";
+            cin >> temp;
+            seed.push_back(uint8_t(temp));
+        }
         RC4 rc4(seed);
         if(selection == 1){
             string dataString;
             cout << "Enter your data";
-            cin >> dataString;
+            cin.ignore();  // Add this line to clear the newline character from the buffer.
+            getline(cin, dataString);
             vector<uint8_t> data;
             for(int i = 0 ; i < dataString.length() ; i++) {
                 if(dataString[i] != ' ') data.push_back(uint8_t(dataString[i]));
@@ -139,6 +137,7 @@ int main()
             }
             rc4.encryptDecrypt(data, 1);
         }
+        cout << "My selection is " << selection << endl;
     } while(selection != 5) ;
     return 0;
 
